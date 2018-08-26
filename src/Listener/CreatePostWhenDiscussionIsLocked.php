@@ -99,7 +99,7 @@ class CreatePostWhenDiscussionIsLocked
         if ($discussion->user_id !== $user->id) {
             $notification = new DiscussionLockedBlueprint($post);
 
-            $this->notifications->sync($notification, $post->exists ? [$discussion->startUser] : []);
+            $this->notifications->sync($notification, $post->exists ? [$discussion->user] : []);
         }
     }
 }
