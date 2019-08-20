@@ -20,8 +20,9 @@ class AddDiscussionLockedAttributes
     {
         if ($event->isSerializer(DiscussionSerializer::class)) {
             $event->attributes['isLocked'] = (bool) $event->model->is_locked;
-            $event->attributes['canReply'] = $event->attributes['isLocked'] === true
-                ? (bool) $event->actor->can('lock', $event->model) : true;
+            $event->attributes['canReply'] =
+                ($event->attributes['canReply'] === true && $event->attributes['isLocked'] === true)
+                ? (bool) $event->actor->can('lock', $event->model) : $event->attributes['canReply'];
             $event->attributes['canLock'] = (bool) $event->actor->can('lock', $event->model);
         }
     }
