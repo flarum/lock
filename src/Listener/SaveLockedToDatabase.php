@@ -22,7 +22,7 @@ class SaveLockedToDatabase
             $discussion = $event->discussion;
             $actor = $event->actor;
 
-            $actor->can('lock', $discussion);
+            $actor->assertCan('lock', $discussion);
 
             if ((bool) $discussion->is_locked === $isLocked) {
                 return;
