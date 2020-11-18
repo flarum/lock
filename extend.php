@@ -45,15 +45,15 @@ return [
     (new Extend\Post())
         ->type(DiscussionLockedPost::class),
 
-    function (Dispatcher $events) {
-        $events->listen(ConfigureDiscussionGambits::class, function (ConfigureDiscussionGambits $event) {
+    (new Extend\Event())
+        ->listen(ConfigureDiscussionGambits::class, function (ConfigureDiscussionGambits $event) {
             $event->gambits->add(LockedGambit::class);
-        });
-        $events->listen(Saving::class, Listener\SaveLockedToDatabase::class);
+        })
+        ->listen(Saving::class, Listener\SaveLockedToDatabase::class)
+        ->listen(DiscussionWasLocked::class, Listener\CreatePostWhenDiscussionIsLocked::class)
+        ->listen(DiscussionWasUnlocked::class, Listener\CreatePostWhenDiscussionIsUnlocked::class),
 
-        $events->listen(DiscussionWasLocked::class, Listener\CreatePostWhenDiscussionIsLocked::class);
-        $events->listen(DiscussionWasUnlocked::class, Listener\CreatePostWhenDiscussionIsUnlocked::class);
-
+    function (Dispatcher $events) {
         $events->subscribe(Access\DiscussionPolicy::class);
     },
 ];
