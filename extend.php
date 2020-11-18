@@ -12,7 +12,6 @@ use Flarum\Api\Serializer\DiscussionSerializer;
 use Flarum\Discussion\Discussion;
 use Flarum\Discussion\Event\Saving;
 use Flarum\Event\ConfigureDiscussionGambits;
-use Flarum\Event\ConfigurePostTypes;
 use Flarum\Extend;
 use Flarum\Lock\Access;
 use Flarum\Lock\Event\DiscussionWasLocked;
@@ -43,15 +42,15 @@ return [
             return (bool) $serializer->getActor()->can('lock', $discussion);
         }),
 
+    (new Extend\Post())
+        ->type(DiscussionLockedPost::class),
+
     function (Dispatcher $events) {
         $events->listen(ConfigureDiscussionGambits::class, function (ConfigureDiscussionGambits $event) {
             $event->gambits->add(LockedGambit::class);
         });
         $events->listen(Saving::class, Listener\SaveLockedToDatabase::class);
 
-        $events->listen(ConfigurePostTypes::class, function (ConfigurePostTypes $event) {
-            $event->add(DiscussionLockedPost::class);
-        });
         $events->listen(DiscussionWasLocked::class, Listener\CreatePostWhenDiscussionIsLocked::class);
         $events->listen(DiscussionWasUnlocked::class, Listener\CreatePostWhenDiscussionIsUnlocked::class);
 
