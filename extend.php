@@ -7,8 +7,9 @@
  * LICENSE file that was distributed with this source code.
  */
 
-use Flarum\Api\Event\Serializing;
 use Flarum\Api\Serializer\BasicDiscussionSerializer;
+use Flarum\Api\Serializer\DiscussionSerializer;
+use Flarum\Discussion\Discussion;
 use Flarum\Discussion\Event\Saving;
 use Flarum\Event\ConfigureDiscussionGambits;
 use Flarum\Event\ConfigurePostTypes;
@@ -35,11 +36,17 @@ return [
     (new Extend\Notification())
         ->type(DiscussionLockedBlueprint::class, BasicDiscussionSerializer::class, ['alert']),
 
+    (new Extend\ApiSerializer(DiscussionSerializer::class))
+        ->attribute('isLocked', function (array $attributes, Discussion $discussion, DiscussionSerializer $serializer) {
+            return (bool) $discussion->is_locked;
+        })->attribute('canLock', function (array $attributes, Discussion $discussion, DiscussionSerializer $serializer) {
+            return (bool) $serializer->getActor()->can('lock', $discussion);
+        }),
+
     function (Dispatcher $events) {
         $events->listen(ConfigureDiscussionGambits::class, function (ConfigureDiscussionGambits $event) {
             $event->gambits->add(LockedGambit::class);
         });
-        $events->listen(Serializing::class, Listener\AddDiscussionLockedAttributes::class);
         $events->listen(Saving::class, Listener\SaveLockedToDatabase::class);
 
         $events->listen(ConfigurePostTypes::class, function (ConfigurePostTypes $event) {
