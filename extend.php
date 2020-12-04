@@ -36,9 +36,10 @@ return [
         ->type(DiscussionLockedBlueprint::class, BasicDiscussionSerializer::class, ['alert']),
 
     (new Extend\ApiSerializer(DiscussionSerializer::class))
-        ->attribute('isLocked', function (array $attributes, Discussion $discussion, DiscussionSerializer $serializer) {
+        ->attribute('isLocked', function (DiscussionSerializer $serializer, Discussion $discussion) {
             return (bool) $discussion->is_locked;
-        })->attribute('canLock', function (array $attributes, Discussion $discussion, DiscussionSerializer $serializer) {
+        })
+        ->attribute('canLock', function (DiscussionSerializer $serializer, Discussion $discussion) {
             return (bool) $serializer->getActor()->can('lock', $discussion);
         }),
 
