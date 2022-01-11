@@ -13,6 +13,6 @@ export default class DiscussionLockedNotification extends Notification {
   }
 
   content() {
-    return app.translator.trans('flarum-lock.forum.notifications.discussion_locked_text', {user: this.attrs.notification.fromUser()});
+    return app.translator.trans('flarum-lock.forum.notifications.discussion_locked_text', { user: this.attrs.notification.fromUser() });
   }
 }
