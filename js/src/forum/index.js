@@ -1,8 +1,8 @@
-import { extend } from 'flarum/extend';
-import app from 'flarum/app';
-import Model from 'flarum/Model';
-import Discussion from 'flarum/models/Discussion';
-import NotificationGrid from 'flarum/components/NotificationGrid';
+import { extend } from 'flarum/common/extend';
+import app from 'flarum/forum/app';
+import Model from 'flarum/common/Model';
+import Discussion from 'flarum/common/models/Discussion';
+import NotificationGrid from 'flarum/forum/components/NotificationGrid';
 
 import DiscussionLockedPost from './components/DiscussionLockedPost';
 import DiscussionLockedNotification from './components/DiscussionLockedNotification';

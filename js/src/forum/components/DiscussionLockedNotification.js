@@ -1,4 +1,5 @@
-import Notification from 'flarum/components/Notification';
+import app from 'flarum/forum/app';
+import Notification from 'flarum/forum/components/Notification';
 
 export default class DiscussionLockedNotification extends Notification {
   icon() {
