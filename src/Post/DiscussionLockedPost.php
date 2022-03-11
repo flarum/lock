@@ -49,14 +49,15 @@ class DiscussionLockedPost extends AbstractEventPost implements MergeableInterfa
     /**
      * Create a new instance in reply to a discussion.
      *
-     * @param int $discussionId
-     * @param int $userId
+     * @param int  $discussionId
+     * @param int  $userId
      * @param bool $isLocked
+     *
      * @return static
      */
     public static function reply($discussionId, $userId, $isLocked)
     {
-        $post = new static;
+        $post = new static();
 
         $post->content = static::buildContent($isLocked);
         $post->created_at = time();
@@ -70,6 +71,7 @@ class DiscussionLockedPost extends AbstractEventPost implements MergeableInterfa
      * Build the content attribute.
      *
      * @param bool $isLocked Whether or not the discussion is locked.
+     *
      * @return array
      */
     public static function buildContent($isLocked)

@@ -39,6 +39,6 @@ class LockedFilterGambit extends AbstractRegexGambit implements FilterInterface
 
     protected function constrain(Builder $query, bool $negate)
     {
-        $query->where('is_locked', ! $negate);
+        $query->where('is_locked', !$negate);
     }
 }

@@ -16,8 +16,9 @@ use Flarum\User\User;
 class DiscussionPolicy extends AbstractPolicy
 {
     /**
-     * @param User $actor
+     * @param User       $actor
      * @param Discussion $discussion
+     *
      * @return bool
      */
     public function reply(User $actor, Discussion $discussion)
